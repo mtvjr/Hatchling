@@ -50,6 +50,7 @@ class SecretSanta(commands.cog.Cog):
         current_guild = ctx.message.guild.id
         registrants = self.db.query(SantaRegistrant.user_id)\
             .filter_by(guild_id=current_guild)
-        santas = [ctx.get_member(registrant).display_name for registrant in registrants]
+        santas = [ctx.message.guild.get_member(registrant).display_name
+                  for registrant in registrants]
         message = "The registered santas are: " + ", ".join(santas)
         await src.util.send(message, ctx)
