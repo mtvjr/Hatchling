@@ -1,6 +1,6 @@
 from discord.ext import commands
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer
+from sqlalchemy import Column, BigInteger
 
 import src.util
 
@@ -10,8 +10,8 @@ Base = declarative_base()
 class SantaRegistrant(Base):
     __tablename__ = "secret_santa_registrations"
 
-    guild_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, primary_key=True)
+    guild_id = Column(BigInteger, primary_key=True)
+    user_id = Column(BigInteger, primary_key=True)
 
     def __repr__(self):
         return "<SecretSantaRegister(guild_id='%s', user_id='%s'" % (
