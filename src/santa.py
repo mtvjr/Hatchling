@@ -46,7 +46,7 @@ class SecretSanta(commands.cog.Cog):
         guild_id = ctx.message.guild.id
 
         if user_id in self.get_registrants_ids(guild_id):
-            await src.util.send("Silly goose, you are already registered")
+            await src.util.send("Silly goose, you are already registered", ctx)
             return
 
         registration = SantaRegistrant(guild_id=guild_id, user_id=user_id)
