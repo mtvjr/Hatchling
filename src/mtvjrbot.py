@@ -23,7 +23,6 @@ if __name__ == "__main__":
 
     url = os.getenv("DATABASE_URL")
 
-    print(f"Got URL {url}")
     engine = create_engine(url)
     db = scoped_session(sessionmaker(bind=engine))
 
