@@ -1,1 +1,1 @@
-web: python src/mtvjrbot.py
+bot: python src/mtvjrbot.py
