@@ -1,4 +1,4 @@
-async def send(message, context):
+async def send(context, message):
     '''
     This function prints a message to stdout and sends it to the context
     '''

@@ -1,8 +1,6 @@
 import os
-import sys
 import discord.ext.commands.bot
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
 from hatch.santa import SecretSanta
 
 bot_authors = [
@@ -12,6 +10,7 @@ bot_authors = [
 bot_description = "A discord bot to handle things and stuff."
 bot_source = "https://www.github.com/mtvjr/hatchling"
 bot_name = "Hatchling"
+bot_version = "0.0.2"
 
 if __name__ == "__main__":
     if not os.getenv("DISCORD_TOKEN"):
@@ -25,10 +24,9 @@ if __name__ == "__main__":
     url = os.getenv("DATABASE_URL")
 
     engine = create_engine(url)
-    db = scoped_session(sessionmaker(bind=engine))
 
     bot = discord.ext.commands.Bot('!', description=bot_description)
-    bot.add_cog(SecretSanta(bot, db))
+    bot.add_cog(SecretSanta(bot, engine))
 
     @bot.event
     async def on_ready():
@@ -41,6 +39,10 @@ if __name__ == "__main__":
     @bot.command()
     async def authors(ctx):
         await ctx.send("I was written by: " + ", ".join(bot_authors))
+
+    @bot.command()
+    async def version(ctx):
+        await ctx.send(f"I am on version {bot_version}.")
 
     print(f"Starting {bot_name}")
     bot.run(token)
