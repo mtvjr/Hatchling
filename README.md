@@ -1,4 +1,4 @@
-# mtvjrbot
+# Hatchling
 A (newer) bot for discord
 
 ## Purpose
@@ -10,9 +10,9 @@ It will probably not suite your needs.
 
 ## Feature Roadmap
 
-1. Secret Santa
+1. Secret Santa (Partway done)
 2. Role managing
 3. ???
 
 ## How to Run
-Simply run mtvjrbot.py with a DISCORD_TOKEN environmental variable set.
+TODO: This

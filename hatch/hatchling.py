@@ -3,14 +3,15 @@ import sys
 import discord.ext.commands.bot
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from src.santa import SecretSanta
+from hatch.santa import SecretSanta
 
 bot_authors = [
     "mtvjr",
 ]
 
-bot_description = "A discord bot to handle things for mtvjr."
-bot_source = "https://www.github.com/mtvjr/mtvjrbot"
+bot_description = "A discord bot to handle things and stuff."
+bot_source = "https://www.github.com/mtvjr/hatchling"
+bot_name = "Hatchling"
 
 if __name__ == "__main__":
     if not os.getenv("DISCORD_TOKEN"):
@@ -31,7 +32,7 @@ if __name__ == "__main__":
 
     @bot.event
     async def on_ready():
-        print('mtvjrbot is up and ready')
+        print(f'{bot_name} is up and ready')
 
     @bot.command()
     async def source(ctx):
@@ -41,5 +42,5 @@ if __name__ == "__main__":
     async def authors(ctx):
         await ctx.send("I was written by: " + ", ".join(bot_authors))
 
-    print("Starting bot")
+    print(f"Starting {bot_name}")
     bot.run(token)

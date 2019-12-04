@@ -2,7 +2,7 @@ from discord.ext import commands
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, BigInteger
 
-import src.util
+import hatch.util
 
 Base = declarative_base()
 
@@ -46,14 +46,14 @@ class SecretSanta(commands.cog.Cog):
         guild_id = ctx.message.guild.id
 
         if user_id in self.get_registrants_ids(guild_id):
-            await src.util.send("Silly goose, you are already registered", ctx)
+            await hatch.util.send("Silly goose, you are already registered", ctx)
             return
 
         registration = SantaRegistrant(guild_id=guild_id, user_id=user_id)
         self.db.add(registration)
         self.db.commit()
         message = f"{username} has joined the secret santa!"
-        await src.util.send(message, ctx)
+        await hatch.util.send(message, ctx)
 
     @santa.command()
     async def list(self, ctx):
@@ -69,4 +69,4 @@ class SecretSanta(commands.cog.Cog):
                 print("Unable to find username for " + registrant)
 
         message = "The registered Santas are: " + ", ".join(santas)
-        await src.util.send(message, ctx)
+        await hatch.util.send(message, ctx)
