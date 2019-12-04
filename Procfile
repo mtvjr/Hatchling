@@ -1,1 +1,1 @@
-bot: python src/hatchling.py
+bot: python hatch/hatchling.py
