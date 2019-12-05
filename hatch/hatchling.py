@@ -10,7 +10,7 @@ bot_authors = [
 bot_description = "A discord bot to handle things and stuff."
 bot_source = "https://www.github.com/mtvjr/hatchling"
 bot_name = "Hatchling"
-bot_version = "0.0.2"
+bot_version = "0.1.0"
 
 if __name__ == "__main__":
     if not os.getenv("DISCORD_TOKEN"):
@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     @bot.event
     async def on_ready():
-        print(f'{bot_name} is up and ready')
+        print(f'{bot_name} has escaped from his shell')
 
     @bot.command()
     async def source(ctx):
@@ -44,5 +44,5 @@ if __name__ == "__main__":
     async def version(ctx):
         await ctx.send(f"I am on version {bot_version}.")
 
-    print(f"Starting {bot_name}")
+    print(f"Hatching {bot_name}")
     bot.run(token)
