@@ -315,13 +315,20 @@ class SecretSanta(commands.cog.Cog):
         if pairing is None:
             await context.send("There was an error retrieving your target")
 
-        target = self.bot.get_user(pairing.target_id)
+        target = self.bot.get_guild(current_exchange.guild_id).get_member(pairing.target_id)
 
+        awaits = list()
         message = f"Your Secret Santa from {exchange} sends you a message.\n\n" + \
                   f"Reply using `!santa reply {exchange} Your message here`\n\n" + \
                   "> " + "\n> ".join(santa_message.splitlines())  # Put each line into a quote
 
-        await target.send(message)
+        awaits.append(target.send(message))
+
+        notice = f"Your message has been forwarded to {target.display_name}."
+
+        awaits.append(context.send(notice))
+
+        await wait(awaits)
 
     @santa.command()
     async def reply(self, context, exchange="", *, target_message=""):
@@ -374,11 +381,19 @@ class SecretSanta(commands.cog.Cog):
         target = self.bot.get_user(pairing.santa_id)
         santa = context.bot.get_guild(current_exchange.guild_id).get_member(user_id).display_name
 
+        awaits = list()
+
         message = f"Your target ({santa}) from the Secret Santa exchange {exchange} sends you a message.\n\n" + \
                   f"Reply using `!santa message {exchange} Your message here`\n\n" + \
                   "> " + "\n> ".join(target_message.splitlines())  # Put each line into a quote
 
-        await target.send(message)
+        awaits.append(target.send(message))
+
+        notice = "Your message has been forwarded to your santa."
+
+        awaits.append(context.send(notice))
+
+        await wait(awaits)
 
     @santa.command()
     async def close(self, context, exchange_name=""):

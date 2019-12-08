@@ -10,7 +10,7 @@ bot_authors = [
 bot_description = "A discord bot to handle things and stuff."
 bot_source = "https://www.github.com/mtvjr/hatchling"
 bot_name = "Hatchling"
-bot_version = "0.1.0"
+bot_version = "0.1.1"
 
 if __name__ == "__main__":
     if not os.getenv("DISCORD_TOKEN"):
