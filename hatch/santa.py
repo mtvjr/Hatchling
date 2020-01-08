@@ -318,9 +318,9 @@ class SecretSanta(commands.cog.Cog):
         target = self.bot.get_guild(current_exchange.guild_id).get_member(pairing.target_id)
 
         awaits = list()
-        message = f"Your Secret Santa from {exchange} sends you a message.\n\n" + \
-                  f"Reply using `!santa reply {exchange} Your message here`\n\n" + \
-                  "> " + "\n> ".join(santa_message.splitlines())  # Put each line into a quote
+        message = (f"Your Secret Santa from {exchange} sends you a message.\n\n" +
+                    "> " + "\n> ".join(santa_message.splitlines()) + # Put each line into a quote
+                   f"Reply using `!santa reply {exchange} Your message here`\n\n")
 
         awaits.append(target.send(message))
 
@@ -383,9 +383,9 @@ class SecretSanta(commands.cog.Cog):
 
         awaits = list()
 
-        message = f"Your target ({santa}) from the Secret Santa exchange {exchange} sends you a message.\n\n" + \
-                  f"Reply using `!santa message {exchange} Your message here`\n\n" + \
-                  "> " + "\n> ".join(target_message.splitlines())  # Put each line into a quote
+        message = (f"Your target ({santa}) from the Secret Santa exchange {exchange} sends you a message.\n\n" +
+                   "> " + "\n> ".join(target_message.splitlines()) + # Put each line into a quote
+                   f"Reply using `!santa message {exchange} Your message here`\n\n")
 
         awaits.append(target.send(message))
 
