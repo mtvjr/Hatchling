@@ -319,8 +319,8 @@ class SecretSanta(commands.cog.Cog):
 
         awaits = list()
         message = (f"Your Secret Santa from {exchange} sends you a message.\n\n" +
-                    "> " + "\n> ".join(santa_message.splitlines()) + # Put each line into a quote
-                   f"Reply using `!santa reply {exchange} Your message here`\n\n")
+                   "> " + "\n> ".join(santa_message.splitlines()) +  # Put each line into a quote
+                   f"\n\nReply using `!santa reply {exchange} Your message here`")
 
         awaits.append(target.send(message))
 
