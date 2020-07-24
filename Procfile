@@ -1,1 +1,1 @@
-bot: python hatch/hatchling.py
+bot: python hatchling.py

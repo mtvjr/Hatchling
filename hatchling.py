@@ -1,3 +1,4 @@
+#!/bin/python
 import os
 import discord.ext.commands.bot
 from sqlalchemy import create_engine
