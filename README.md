@@ -10,8 +10,8 @@ It will probably not suite your needs.
 
 ## Feature Roadmap
 
-1. Secret Santa (Partway done)
-2. Role managing
+1. Secret Santa (Mostly done)
+2. Contests (Hopefully done)
 3. ???
 
 ## How to Run

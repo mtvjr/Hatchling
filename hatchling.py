@@ -3,6 +3,7 @@ import os
 import discord.ext.commands.bot
 from sqlalchemy import create_engine
 from hatch.santa import SecretSanta
+from hatch.contest import Contests
 
 bot_authors = [
     "mtvjr",
@@ -11,7 +12,7 @@ bot_authors = [
 bot_description = "A discord bot to handle things and stuff."
 bot_source = "https://www.github.com/mtvjr/hatchling"
 bot_name = "Hatchling"
-bot_version = "0.1.2"
+bot_version = "0.2.0"
 
 if __name__ == "__main__":
     if not os.getenv("DISCORD_TOKEN"):
@@ -28,6 +29,7 @@ if __name__ == "__main__":
 
     bot = discord.ext.commands.Bot('!', description=bot_description)
     bot.add_cog(SecretSanta(bot, engine))
+    bot.add_cog(Contests(bot, engine))
 
     @bot.event
     async def on_ready():

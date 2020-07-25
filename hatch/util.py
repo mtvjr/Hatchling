@@ -18,3 +18,14 @@ def is_from_dm(context):
     This function returns true if a message was sent from a direct message, false otherwise.
     """
     return context.message.guild is None
+
+
+def get_displayname(id, context):
+    """
+    This function gets the printable username of a user
+    """
+    user = context.message.guild.get_member(id)
+    if user is None:
+        return f"User {id}"
+    else:
+        return user.display_name
