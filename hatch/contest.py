@@ -96,7 +96,7 @@ class Contests(commands.cog.Cog):
         try:
             session.commit()
             await util.send(context, f"The contest {name} has been created and opened." +
-                            f" You may join with the command `!contest join {name}`")
+                            f" You may join with the command `!contest enter {name}`")
         except IntegrityError:
             session.rollback()
             await util.send(context, f"The contest name {name} has already been used. Please try another")
