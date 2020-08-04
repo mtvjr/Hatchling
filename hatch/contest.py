@@ -357,7 +357,7 @@ class Contests(commands.cog.Cog):
         # Update the database
         session.commit()
 
-        message = ("Congrats to the following winners: \n\t"
+        message = ("Congrats to the following winners: \n\t" +
                     "\n\t".join([print_rank(winner, context) for winner in winners]))
 
         await context.send(message)
@@ -397,7 +397,7 @@ class Contests(commands.cog.Cog):
                     .order_by(Entry.win_rank)
                     .all())
 
-        message = ("Congrats to the following winners: \n\t"
+        message = ("Congrats to the following winners: \n\t" +
                     "\n\t".join([print_rank(winner, context) for winner in winners]))
         
         await context.send(message)
