@@ -30,7 +30,10 @@ if __name__ == "__main__":
 
     engine = create_engine(url)
 
-    bot = discord.ext.commands.Bot('!', description=bot_description)
+    intents = discord.Intents.default()
+    intents.members = True
+
+    bot = discord.ext.commands.Bot('!', description=bot_description, intents=intents)
     bot.add_cog(SecretSanta(bot, engine))
     bot.add_cog(Contests(bot, engine))
 
