@@ -1,5 +1,8 @@
 #!/bin/python
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 import discord.ext.commands.bot
 from sqlalchemy import create_engine
 from hatch.santa import SecretSanta
