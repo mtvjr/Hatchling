@@ -25,11 +25,11 @@ class Exchange(Base):
     name = Column(String(EXCHANGE_NAME_SIZE), primary_key=True)
     guild_id = Column(BigInteger, nullable=False)
     owner_id = Column(BigInteger, nullable=False)
-    open = Column(Boolean, nullable=False)
+    is_open = Column(Boolean, nullable=False)
 
     def __repr__(self):
-        return "<SantaExchange(name='%s', guild_id='%s', owner_id='%s', drawn='%s')>" % (
-            self.name, self.guild_id, self.owner_id, self.targets_drawn)
+        return "<SantaExchange(name='%s', guild_id='%s', owner_id='%s', is_open='%s')>" % (
+            self.name, self.guild_id, self.owner_id, str(self.is_open))
 
 
 class Registrant(Base):
@@ -44,7 +44,7 @@ class Registrant(Base):
 
     def __repr__(self):
         return "<SantaRegistrant(exchange='%s', user_id='%s'>" % (
-            self.exchange_id, self.user_id)
+            self.exchange, self.user_id)
 
 
 class Pairing(Base):
@@ -130,7 +130,7 @@ class SecretSanta(commands.cog.Cog):
             name=name,
             guild_id=ctx.message.guild.id,
             owner_id=ctx.message.author.id,
-            open=True,
+            is_open=True,
         )
 
         session = self.sessionmaker()
@@ -176,7 +176,7 @@ class SecretSanta(commands.cog.Cog):
             await ctx.send(f"Secret Santa exchange {exchange_name} was not found")
             return
 
-        if not exchange.open:
+        if not exchange.is_open:
             session.close()
             await ctx.send(f"Secret Santa exchange {exchange_name} is closed. Please join the next exchange")
             return
@@ -221,7 +221,7 @@ class SecretSanta(commands.cog.Cog):
         session = self.sessionmaker()
         exchanges = [exchange.name for exchange in
                      session.query(Exchange)
-                         .filter_by(guild_id=guild_id, open=True)
+                         .filter_by(guild_id=guild_id, is_open=True)
                          .all()]
         session.close()
 
@@ -299,7 +299,7 @@ class SecretSanta(commands.cog.Cog):
             await context.send(f"The exchange {exchange} does not exist.")
             return
 
-        if current_exchange.open:
+        if current_exchange.is_open:
             session.close()
             await context.send(f"The exchange {exchange} is still open, targets have not been drawn yet.")
             return
@@ -362,7 +362,7 @@ class SecretSanta(commands.cog.Cog):
             await context.send(f"The exchange {exchange} does not exist.")
             return
 
-        if current_exchange.open:
+        if current_exchange.is_open:
             session.close()
             await context.send(f"The exchange {exchange} is still open, targets have not been drawn yet.")
             return
@@ -424,7 +424,7 @@ class SecretSanta(commands.cog.Cog):
             await context.send(f"Only the owner of {exchange_name} ({owner_name}) may close it.")
             return
 
-        if not exchange.open:
+        if not exchange.is_open:
             session.close()
             await context.send(f"The exchange {exchange_name} is already closed.")
             return
@@ -465,7 +465,7 @@ class SecretSanta(commands.cog.Cog):
         ]
 
         # Update the database
-        exchange.open = False
+        exchange.is_open = False
         session.add_all(pairings)
         session.commit()
 
