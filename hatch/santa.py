@@ -3,8 +3,8 @@ from random import shuffle
 from asyncio import wait
 
 from discord.ext import commands
-from sqlalchemy import BigInteger, Boolean, create_engine, CheckConstraint, Column, ForeignKey, \
-    ForeignKeyConstraint, String
+from sqlalchemy import and_, BigInteger, Boolean, create_engine, CheckConstraint, Column, ForeignKey, \
+    ForeignKeyConstraint, Integer, String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -67,6 +67,15 @@ class Pairing(Base):
     def __repr__(self):
         return "<SantaPairing(exchange='%s', santa_id='%s', target_id='%s'>" % (
             self.exchange, self.santa_id, self.target_id)
+
+class ProhibitedMatches(Base):
+    """
+    This is a SQLAlchemy class representing secret santas who are not allowed to be paired
+    """
+    __tablename__ = "santa_prohibitions"
+    prohibition_id = Column(Integer, primary_key=True)
+    first_id = Column(BigInteger, nullable=False)
+    second_id = Column(BigInteger, nullable=False)
 
 
 # Create the tables needed for Secret Santa
@@ -201,7 +210,7 @@ class SecretSanta(commands.cog.Cog):
             message = f"There was an unknown error registering {username} for {exchange_name}!"
             await util.send(ctx, message)
         session.close()
-
+    
     @santa.command()
     async def list(self, ctx, exchange_name=""):
         """ List the Secret Santa exchanges or participants"""
@@ -455,7 +464,34 @@ class SecretSanta(commands.cog.Cog):
             await context.send(f"There must be at least 2 Santas in {exchange_name} for it to close.")
             return
 
-        matches = match_santa_pairs(participants)
+        # Prevent prohibited pairs
+        tries = 0
+        matches = list()
+        while True:
+            tries = tries + 1
+            matches = match_santa_pairs(participants)
+
+            # Check to see if the match is prohibited
+            prohibited = False
+            pairs = matches + [(b, a) for a, b in matches]
+            for pair in pairs:
+                if session.query(ProhibitedMatches).filter(
+                    ProhibitedMatches.first_id==pair[0],
+                    ProhibitedMatches.second_id==pair[1]
+                ).count() > 0:
+                    prohibited = True
+                    break
+
+            if not prohibited:
+                break 
+
+            # Break out if we are stuck in a loop
+            if prohibited and tries > 100:
+                session.close()
+                message = f"Unable to make pairs for {exchange_name}. Please add more people and try again."
+                await context.send(message)
+                return
+
 
         pairings = [Pairing(
                 exchange=exchange_name,
