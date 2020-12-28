@@ -198,22 +198,23 @@ class Contests(commands.cog.Cog):
         session = self.sessionmaker()
 
         # Verify the contest is created for the current guild
-        if session.query(Contest) \
+        contest = session.query(Contest) \
                 .filter_by(name=contest_name, guild_id=guild_id) \
-                .one_or_none() is None:
+                .one_or_none()
+        if contest is None:
             session.rollback()
             session.close()
             await context.send(f"Contest {contest_name} was not found")
             return
 
-        contests = session.query(Entry.user_id) \
-            .filter(Contest.name == contest_name, Contest.guild_id == guild_id) \
+        entries = session.query(Entry.user_id) \
+            .filter_by(contest=contest.cid) \
             .all()
 
         session.close()
 
         # Grab discord display names
-        usernames = [util.get_displayname(contest.user_id, context) for contest in contests]
+        usernames = [util.get_displayname(entry.user_id, context) for entry in entries]
 
         if len(usernames) == 0:
             message = "There are no entries for " + contest_name
