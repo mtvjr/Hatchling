@@ -130,7 +130,7 @@ class SecretSanta(commands.cog.Cog):
         if not util.is_from_guild(ctx):
             await util.send(ctx, "This message only works in a server")
             return
-        if name is "":
+        if name == "":
             await util.send(ctx, "You must name your secret santa event." +
                             "\nExample: `!santa create RT2019`")
             return
